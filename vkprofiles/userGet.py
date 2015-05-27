@@ -19,7 +19,7 @@ def buildUrl(method_name, parameters):
     """read https://vk.com/dev/api_requests"""
     req_url = 'https://api.vk.com/method/{method_name}?{parameters}&v={api_v}'.format(
         method_name=method_name, api_v=apiVersion, parameters=parameters)
-    req_url = '{}&access_token={token}'.format(req_url, token=getToken('myAccessToken'))
+    req_url = '{}&access_token={token}'.format(req_url, token=getToken('vladToken'))
     req_url = '{}&scope={scp}'.format(req_url, scp='friends')
     return req_url
 
@@ -47,7 +47,7 @@ def getUsersInList(user_id, list_id):
 
 def parseUserCircles(user_id):
     lists = getLists(user_id)
-    f = open('oleg.circles', 'w', encoding='utf-8')
+    f = open('vlad.circles', 'w', encoding='utf-8')
 
     for next_list in lists:
         f.write(next_list['name'] + ':')
@@ -78,7 +78,7 @@ def getEdges(user_id):
         raise ReferenceError('Error: %s Code: %s' % (r['error']['error_msg'], r['error']['error_code']))
     r = r['response']
     result = {}
-    f = open('user.edges', 'w')
+    f = open('vlad.edges', 'w')
     for x in r:
         key = x['id']
         value = x['common_friends']
@@ -94,10 +94,10 @@ def getEdges(user_id):
 
 
 if __name__ == '__main__':
-    # parseUserCircles(olegId)
-    # result = getAllFriendsInfo(myId)
-    # result.append(getUsersInfo([myId], fields))
-    # with open('my_friends.json', 'w', encoding='utf-8') as f:
-    #     f.write(str(result))
+    # parseUserCircles(vladId)
+    result = getAllFriendsInfo(vladId)
+    result.append(getUsersInfo([vladId], fields))
+    with open('vlad_friends.json', 'w', encoding='utf-8') as f:
+        f.write(str(result))
 
-    print(getEdges(rusId))
+    getEdges(vladId)
